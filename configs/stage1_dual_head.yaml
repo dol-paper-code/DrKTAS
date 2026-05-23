@@ -1,0 +1,58 @@
+# Stage 1 — Dual-Head (full adjudication-sequence supervision)
+#
+# Primary Stage 1 configuration of Dr.KTAS. The generation head supervises
+# the entire (age, category, subcategory, modifier, level) sequence, and the
+# classification head provides an independent final-level prediction from the
+# delimiter-position hidden state. Reproduces the "Dual-Head" rows in
+# Tables I and IV of the paper.
+
+mode:
+  target_format: full_sequence    # generate the entire adjudication tuple
+  use_classification_head: true   # enable the auxiliary classification head
+  use_classification_only: false
+
+model:
+  backbone: mistralai/Ministral-8B-Instruct-2410
+  quantization: 4bit
+  bnb_4bit_quant_type: nf4
+  bnb_4bit_use_double_quant: true
+  compute_dtype: bfloat16
+  attn_implementation: flash_attention_2
+
+lora:
+  r: 64
+  alpha: 128
+  dropout: 0.05
+  target_modules: all_linear
+
+classifier_head:
+  hidden_dim: 512                 # MLP: 4096 -> 512 -> 256 -> 5
+  dropout: 0.1
+  num_classes: 5
+
+loss:
+  # Total loss = L_gen + alpha * L_cls
+  alpha_cls: 0.5
+  use_weighted_cross_entropy: true
+  inverse_frequency_gamma: 1.0
+  use_ordinal_penalty: true
+  ordinal_lambda: 0.5
+  loss_combination: simple_sum    # or 'uncertainty_weighting' (Kendall et al., 2018)
+
+data:
+  max_seq_length: 2048
+  val_split_ratio: 0.01
+
+training:
+  num_epochs: 3
+  per_device_train_batch_size: 4
+  gradient_accumulation_steps: 8
+  # Effective batch = 4 x 8 x 4 GPUs = 128
+  learning_rate_backbone: 2.0e-4
+  learning_rate_classifier: 2.0e-3
+  warmup_ratio: 0.03
+  lr_scheduler_type: cosine
+  optimizer: adamw_torch
+  weight_decay: 0.01
+  max_grad_norm: 1.0
+  seed: 42

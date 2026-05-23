@@ -1,0 +1,57 @@
+# Stage 2 — Guideline-Informed Modifier Re-adjudication
+#
+# Candidate-conditioned modifier selection for head-disagreement cases only.
+# Trained on Stage 1 head-disagreement cases with a separate LoRA adapter.
+# Final acceptance is gated by the acuity-preserving rule:
+#     hat{ell}_S2 <= hat{ell}_gen.
+# Reproduces Table III and Section III-E of the paper.
+
+model:
+  backbone: mistralai/Ministral-8B-Instruct-2410
+  quantization: 4bit              # NF4 with double quantization
+  bnb_4bit_quant_type: nf4
+  bnb_4bit_use_double_quant: true
+  compute_dtype: bfloat16
+  attn_implementation: flash_attention_2
+
+lora:
+  # Independent initialization from the base model (not seeded from Stage 1).
+  r: 64
+  alpha: 128
+  dropout: 0.05
+  target_modules: all_linear
+
+candidate_set:
+  # Candidate grade range: [max(1, min(gen, cls) - 1), min(5, max(gen, cls) + 1)]
+  grade_expansion: 1
+  pediatric_age_threshold: 15
+  min_candidates: 2               # If fewer than 2 candidates, retain Stage 1 generation output
+
+data:
+  max_seq_length: 4096
+  # Stage 2 training/validation are produced by scripts/stage2_prepare_data.py
+  # from the Stage 1 model's predictions on the training cohort.
+
+loss:
+  # The structured-text reason field is masked with -100; only the JSON
+  # "selection number" tokens contribute to the loss.
+  loss_mode: json_structure       # selection number + JSON structure tokens
+                                  # ('selection_only' restricts loss to the digit alone)
+
+training:
+  num_epochs: 1                   # Paper Table III
+  per_device_train_batch_size: 4
+  gradient_accumulation_steps: 4
+  # Effective batch = 4 x 4 = 16
+  learning_rate: 1.5e-5
+  warmup_ratio: 0.1
+  lr_scheduler_type: linear
+  optimizer: adamw_torch
+  weight_decay: 0.02
+  max_grad_norm: 0.5
+  seed: 42
+
+inference:
+  decoding: greedy                # temperature = 0
+  max_new_tokens: 512
+  acuity_preserving_gate: true    # Accept Stage 2 only when level <= Stage 1 gen level

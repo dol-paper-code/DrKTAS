@@ -1,0 +1,92 @@
+{
+  "footer": "Clinical-note details are retained; Stage 2 shows a concise subset of representative candidates.",
+  "cases": [
+    {
+      "clinical_note": [
+        "[Patient #1 — placeholder]",
+        "Replace these lines with the de-identified clinical record you want",
+        "to display in the left panel. Each list entry becomes one wrapped",
+        "line in the figure. Plain strings render as regular text; objects",
+        "of the form {\"text\": \"...\", \"weight\": \"bold\", \"color\": \"success_green\"}",
+        "render with the requested weight and color."
+      ],
+      "stage1": [
+        "Generation head:",
+        {
+          "text": "Adult → Neurologic → ... → Level 2",
+          "weight": "bold",
+          "color": "black"
+        },
+        "Classification head:",
+        {"text": "Level 1", "weight": "bold", "color": "black"},
+        {
+          "text": "Disagreement: Level 2 ≠ Level 1",
+          "weight": "bold",
+          "color": "failure_red"
+        }
+      ],
+      "stage2": [
+        "Candidate range from guideline: Levels 1–3",
+        "Decision-relevant candidates:",
+        "• Candidate A",
+        "• Candidate B",
+        "• Candidate C",
+        {
+          "text": "Selected: Candidate B → Level 1",
+          "weight": "bold",
+          "color": "success_green"
+        }
+      ],
+      "result": [
+        "Ground truth:",
+        "Adult → Neurologic → ... → Level 1",
+        "Final decision:",
+        {
+          "text": "Adult → Neurologic → ... → Level 1",
+          "weight": "bold",
+          "color": "success_green"
+        }
+      ]
+    },
+    {
+      "clinical_note": [
+        "[Patient #2 — placeholder]",
+        "Edit this entry to describe the second case shown in the right panel.",
+        "Long lines are automatically wrapped to fit the box width."
+      ],
+      "stage1": [
+        "Generation head:",
+        "Pediatric → Neurologic → ... → Level 2",
+        "Classification head:",
+        {"text": "Level 1", "weight": "bold", "color": "black"},
+        {
+          "text": "Disagreement: Level 2 ≠ Level 1",
+          "weight": "bold",
+          "color": "failure_red"
+        }
+      ],
+      "stage2": [
+        "Candidate range from guideline: Levels 1–3",
+        "Decision-relevant candidates:",
+        "• Candidate A",
+        "• Candidate B",
+        "• Candidate C",
+        {
+          "text": "Selected: Candidate A → Level 1",
+          "weight": "bold",
+          "color": "failure_red"
+        }
+      ],
+      "result": [
+        "Ground truth:",
+        "Pediatric → Neurologic → ... → Level 2",
+        "Final decision:",
+        {
+          "text": "Pediatric → Neurologic → ... → Level 1",
+          "weight": "bold",
+          "color": "failure_red"
+        }
+      ]
+    }
+  ]
+}

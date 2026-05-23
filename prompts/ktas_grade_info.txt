@@ -1,0 +1,6 @@
+[KTAS 등급 설명]
+Grade 1 (소생, Resuscitation): 즉각적 처치가 필요한 상태
+Grade 2 (긴급, Emergent): 10분 이내 처치가 필요한 상태
+Grade 3 (응급, Urgent): 30분 이내 처치가 필요한 상태
+Grade 4 (준응급, Less Urgent): 60분 이내 처치가 필요한 상태
+Grade 5 (비응급, Non-Urgent): 120분 이내 처치가 필요한 상태

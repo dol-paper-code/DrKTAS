@@ -1,0 +1,53 @@
+# Stage 1 — Classification-only ablation
+#
+# The generation loss is removed and only the classification head is trained
+# from the delimiter-position hidden state. Reproduces the "Classification-only"
+# row in Table I of the paper.
+
+mode:
+  target_format: level            # ignored when classification_only is true; kept for parity
+  use_classification_head: true
+  use_classification_only: true
+
+model:
+  backbone: mistralai/Ministral-8B-Instruct-2410
+  quantization: 4bit
+  bnb_4bit_quant_type: nf4
+  bnb_4bit_use_double_quant: true
+  compute_dtype: bfloat16
+  attn_implementation: flash_attention_2
+
+lora:
+  r: 64
+  alpha: 128
+  dropout: 0.05
+  target_modules: all_linear
+
+classifier_head:
+  hidden_dim: 512                 # MLP: 4096 -> 512 -> 256 -> 5
+  dropout: 0.1
+  num_classes: 5
+
+loss:
+  use_weighted_cross_entropy: true
+  inverse_frequency_gamma: 1.0    # gamma = 1.0 -> standard inverse-frequency reweighting
+  use_ordinal_penalty: true
+  ordinal_lambda: 0.5
+
+data:
+  max_seq_length: 2048
+  val_split_ratio: 0.01
+
+training:
+  num_epochs: 3
+  per_device_train_batch_size: 4
+  gradient_accumulation_steps: 8
+  # Effective batch = 4 x 8 x 4 GPUs = 128
+  learning_rate_backbone: 2.0e-4
+  learning_rate_classifier: 2.0e-3
+  warmup_ratio: 0.03
+  lr_scheduler_type: cosine
+  optimizer: adamw_torch
+  weight_decay: 0.01
+  max_grad_norm: 1.0
+  seed: 42

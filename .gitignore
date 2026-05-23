@@ -1,0 +1,67 @@
+# ─── Clinical data (never commit) ─────────────────────────────────────
+# This repository does not ship any clinical CSVs. The patterns below
+# block anything users may stage locally from CNUH / WKU exports.
+data/
+chonnam_*.csv
+wonkwang_*.csv
+*_clinical_note*.csv
+result/
+runs/
+checkpoints/
+*.ckpt
+*.safetensors
+
+# ─── Secrets ──────────────────────────────────────────────────────────
+.env
+.env.*
+*.key
+openai_api_key*
+api_key*
+
+# ─── Python ───────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ─── Virtual envs ─────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+
+# ─── IDE / OS ─────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# ─── Jupyter ──────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb
+
+# ─── Logs / temp ──────────────────────────────────────────────────────
+*.log
+logs/
+tmp/
+tb_logs/
+wandb/

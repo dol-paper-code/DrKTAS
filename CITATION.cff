@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the accompanying paper."
+title: "Dr.KTAS: LLM-Based Hierarchical KTAS Triage Classification"
+type: software
+authors:
+  - family-names: Park
+    given-names: Hwin Dol
+    email: park.hwin@etri.re.kr
+    affiliation: "Electronics and Telecommunications Research Institute; KAIST"
+  - family-names: Kim
+    given-names: Dohyeun
+    affiliation: "Electronics and Telecommunications Research Institute"
+  - family-names: Choi
+    given-names: Jae Hun
+    affiliation: "Electronics and Telecommunications Research Institute"
+  - family-names: Kim
+    given-names: Dong Ki
+    affiliation: "Chonnam National University Hospital"
+  - family-names: Cho
+    given-names: Yong Soo
+    affiliation: "Chonnam National University Hospital"
+  - family-names: Lee
+    given-names: Uichin
+    email: uclee@kaist.ac.kr
+    affiliation: "Korea Advanced Institute of Science and Technology"
+license: MIT
+repository-code: ""
+preferred-citation:
+  type: article
+  title: "Emergency Department Triage Classification Using LLM-Based Hierarchical Sequence Generation"
+  authors:
+    - family-names: Park
+      given-names: Hwin Dol
+    - family-names: Kim
+      given-names: Dohyeun
+    - family-names: Choi
+      given-names: Jae Hun
+    - family-names: Kim
+      given-names: Dong Ki
+    - family-names: Cho
+      given-names: Yong Soo
+    - family-names: Lee
+      given-names: Uichin
+  journal: "IEEE Journal of Biomedical and Health Informatics"
+  year: 2026
+  notes: "Submitted"

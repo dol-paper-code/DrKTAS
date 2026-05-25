@@ -18,12 +18,18 @@ Dr.KTAS formulates Korean Triage and Acuity Scale (KTAS) classification as **hie
 
 *Overview of the Dr.KTAS framework. Stage 1 generates the full KTAS adjudication sequence and independently predicts the triage level from the shared representation. Head-agreement cases accept the generation output, whereas head-disagreement cases are routed to Stage 2 for Guideline-Informed Modifier Re-adjudication. The selected Stage 2 output is then accepted only through the acuity-preserving gate. (Figure 2 in the paper.)*
 
-## Reported results (paper)
+## KTAS guidelines
 
-| Cohort | Triage-level | Triage-full context | Dual-Head (gen) | **Dr.KTAS** |
-|---|---:|---:|---:|---:|
-| CNUH 2024 (n=21,756) — Acc / QWK | 74.27 / 0.5950 | 78.57 / 0.7162 | 79.84 / 0.7308 | **81.14 / 0.7445** |
-| WKU 2024 (n=12,584) — Acc / QWK | 67.10 / 0.4374 | 75.95 / 0.6647 | 79.99 / 0.7249 | **82.60 / 0.7558** |
+The two lookup tables in [`guidelines/`](https://github.com/dol-paper-code/DrKTAS/tree/main/guidelines) encode the deterministic `(category, subcategory, modifier) → level` mapping used by Dr.KTAS for Stage 2 candidate retrieval and the acuity-preserving gate. They are derived from the official Korean Triage and Acuity Scale (KTAS) reference materials:
+
+- **Regulatory standard.** Ministry of Health and Welfare of Korea. *Korean Triage and Acuity Scale Standard.* MOHW Notice No. 2023-287, December 2023 (effective December 28, 2023).
+- **Scale validation.** Kwon, H., Kim, Y. J., Jo, Y. H., Lee, J. H., Lee, J. H., Kim, J., Hwang, J. E., Jeong, J., & Choi, Y. J. (2019). The Korean Triage and Acuity Scale: associations with admission, disposition, mortality and length of stay in the emergency department. *International Journal for Quality in Health Care*, 31(6), 449–455. <https://doi.org/10.1093/intqhc/mzy184>
+- **Underlying scale.** KTAS is adapted from the Canadian Triage and Acuity Scale: Bullard, M. J., Musgrave, E., Warren, D., Unger, B., Skeldon, T., Grierson, R., van der Linde, E., & Swain, J. (2017). Revisions to the Canadian Emergency Department Triage and Acuity Scale (CTAS) Guidelines 2016. *CJEM*, 19(S2), S18–S27. <https://doi.org/10.1017/cem.2017.365>
+- **Maintaining body.** KTAS Committee (Korean Society of Emergency Medicine), <https://www.ktas.org>.
+
+Each entry in the JSON files has the fields `Lv3exp` (subcategory description), `Lv4exp` (clinical modifier description) and `severity` (KTAS level 1–5). The adult table contains 2,016 classification rules and the pediatric table contains 2,351, matching the counts reported in Section III of the paper.
+
+The lookup tables are released here for research reproducibility. Any clinical use of KTAS in Korea must follow the version of the standard in force at the time of use, which is maintained by the KTAS Committee.
 
 ## Repository layout
 

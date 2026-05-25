@@ -47,7 +47,7 @@ DrKTAS/
 
 No clinical data files are distributed in this repository. The pipeline
 reads CSV inputs that follow the column schema documented in
-`docs/data_governance.md`; users supply their own data files outside the
+`docs/reproduce.md`; users supply their own data files outside the
 repository.
 
 ## Quick start
@@ -88,9 +88,7 @@ See `docs/reproduce.md` for the full reproduction recipe of the four ablations (
 
 ## Data availability
 
-Raw clinical notes from CNUH and WKU **cannot be shared** due to institutional data-governance restrictions (IRB CNUH-2025-041 & 049; DRB CNUH-D-2025-8; WKUH IRB 2025-03-040-003). Only the KTAS guideline lookup tables in `guidelines/` and the prompt templates in `prompts/` are released. No clinical data — real or synthetic — is included in the repository.
-
-Researchers with a formal Data Use Agreement may request derivative artifacts (de-identified evaluation pipeline, model checkpoints) by contacting the corresponding author. See `docs/data_governance.md` for details.
+Raw clinical notes and per-case prediction dumps from the two Korean hospital cohorts used in the paper **cannot be shared** due to institutional data-governance restrictions and informed-consent terms (CNUH IRB CNUH-2025-041 & 049; CNUH DRB CNUH-D-2025-8; WKU IRB 2025-03-040-003). The artifacts released in this repository — the source code, the KTAS guideline lookup tables under `guidelines/`, and the prompt templates under `prompts/` — are sufficient to reproduce the pipeline on a separately licensed cohort that follows the KTAS adjudication format; no clinical data, real or synthetic, is included or distributed through this repository.
 
 ## Citation
 

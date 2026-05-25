@@ -4,12 +4,23 @@ This document walks through reproducing the four ablations and the final Dr.KTAS
 
 ## 0. Data and guidelines
 
-Place your CSV cohort files outside the repository (any path) and pass them via the `--train_data` / `--test_data` / `--stage1_predictions` flags. The required CSV column schema is documented in `docs/data_governance.md`. The KTAS guideline lookup tables ship in `guidelines/`:
+This pipeline accepts any cohort CSV that conforms to the schema below. Place your files outside the repository and pass their paths via the `--train_data` / `--test_data` / `--stage1_predictions` flags.
+
+| Column | Type | Description |
+|---|---|---|
+| `text` | str | Structured prompt built from the patient record: instruction header + demographics + vital signs + visit info + past medical history + chief complaint + present-illness narrative, terminated by the delimiter `[KTAS sequence]`. See `prompts/example_patient_info.txt` for an AI-generated example of the expected layout. |
+| `fullseverity` | str | Documented KTAS adjudication sequence as a comma-separated string: `<age group>, <category>, <subcategory>, <modifier>, <level>`. Mixed Korean / English is permitted. |
+| `Initial_Triage_Classification` | int | Documented institutional KTAS level (1–5). Used as the reference target for evaluation and as the ordinal classification label. |
+| `Research_ID`, `Extracted_ID` | str | Optional identifiers used to join predictions across runs. |
+
+The KTAS guideline lookup tables ship in `guidelines/`:
 
 - `guidelines/ktas_adult_guideline_lookup_clean.json`
 - `guidelines/ktas_children_guideline_lookup_clean.json`
 
-Raw clinical notes from the paper cohorts are not redistributed; see `docs/data_governance.md`.
+If your guideline differs from KTAS, replace these JSONs; the candidate-retrieval logic indexes them by category and subcategory.
+
+Raw clinical notes from the paper cohorts are not redistributed (see the *Data availability* section of the README).
 
 ## 1. Stage 1 ablations (Table I)
 

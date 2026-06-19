@@ -58,7 +58,6 @@ _REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(_REPO_ROOT / "src"))
 
 from drktas.data_io import extract_level_from_fullseverity  # noqa: E402
-from drktas.prompts import load_prompt  # noqa: E402
 
 
 logging.basicConfig(
@@ -100,10 +99,42 @@ BACKBONES: Dict[str, BackboneSpec] = {
 
 
 # =============================================================================
-# KTAS grade info & prompts
+# Zero-shot prompts
 # =============================================================================
 
-KTAS_GRADE_INFO = load_prompt("ktas_grade_info")
+BASELINE_PROMPT_TEMPLATES = {
+    "no_description": "{patient_info}",
+    "with_description": """[지시문]
+다음 환자의 의료 기록을 바탕으로 응급 중증도를 분류하십시오.
+
+{patient_info}
+
+[KTAS 중증도 등급]
+Grade 1 (소생): 생명/사지 위협, 즉각적 처치 필요 - 심정지, 중증 쇼크, 의식장애
+Grade 2 (긴급): 잠재적 생명 위협, 빠른 처치 필요 - 호흡곤란, 흉통, 고열+두통
+Grade 3 (응급): 응급 처치 필요, 악화 가능성 - 중등도 복통, 구토, 경한 호흡곤란
+Grade 4 (준응급): 1-2시간 내 치료/재평가 - 경미한 외상, 요로감염, 만성 악화
+Grade 5 (비응급): 긴급하지 않음 - 경증 설사, 단순 상처, 처방
+
+위 환자의 임상 정보를 분석하고 KTAS 등급을 판별하세요. 응답의 마지막에는 반드시 다음 형식을 지켜 결론을 출력하세요: [[등급]]
+예시: [[1]], [[2]], [[3]], [[4]], [[5]]
+
+[중증도]
+KTAS 등급:""",
+    "constrained": """{patient_info}
+
+[KTAS 중증도 등급]
+Grade 1 (소생): 생명/사지 위협, 즉각적 처치 필요 - 심정지, 중증 쇼크, 의식장애
+Grade 2 (긴급): 잠재적 생명 위협, 빠른 처치 필요 - 호흡곤란, 흉통, 고열+두통
+Grade 3 (응급): 응급 처치 필요, 악화 가능성 - 중등도 복통, 구토, 경한 호흡곤란
+Grade 4 (준응급): 1-2시간 내 치료/재평가 - 경미한 외상, 요로감염, 만성 악화
+Grade 5 (비응급): 긴급하지 않음 - 경증 설사, 단순 상처, 처방
+
+위 환자의 KTAS 등급을 1, 2, 3, 4, 5 중 하나의 숫자로만 답하세요.
+다른 설명 없이 숫자 하나만 출력하세요.
+
+KTAS 등급:""",
+}
 
 
 def extract_patient_info(text: str) -> str:
@@ -115,15 +146,15 @@ def extract_patient_info(text: str) -> str:
 
 
 def build_prompt(text: str, prompt_type: str) -> str:
-    if prompt_type not in {"no_description", "with_description", "constrained"}:
+    if prompt_type not in BASELINE_PROMPT_TEMPLATES:
         raise ValueError(f"Unknown prompt_type={prompt_type!r}.")
-    template = load_prompt(f"baseline_{prompt_type}")
+    template = BASELINE_PROMPT_TEMPLATES[prompt_type]
     if prompt_type == "no_description":
         # The test record already contains the patient information and the
         # KTAS question; the template is just a pass-through formatter.
         return template.format(patient_info=text)
     info = extract_patient_info(text)
-    return template.format(patient_info=info, grade_info=KTAS_GRADE_INFO)
+    return template.format(patient_info=info)
 
 
 # =============================================================================

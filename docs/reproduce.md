@@ -8,7 +8,7 @@ This pipeline accepts any cohort CSV that conforms to the schema below. Place yo
 
 | Column | Type | Description |
 |---|---|---|
-| `text` | str | Structured prompt built from the patient record: instruction header + demographics + vital signs + visit info + past medical history + chief complaint + present-illness narrative, terminated by the delimiter `[KTAS sequence]`. See `prompts/example_patient_info.txt` for an AI-generated example of the expected layout. |
+| `text` | str | Structured prompt built from the patient record: instruction header + demographics + vital signs + visit info + past medical history + chief complaint + present-illness narrative, terminated by the delimiter `[KTAS sequence]`. See `prompts/dual_head_prompt.txt` for an AI-generated example of the expected layout. |
 | `fullseverity` | str | Documented KTAS adjudication sequence as a comma-separated string: `<age group>, <category>, <subcategory>, <modifier>, <level>`. Mixed Korean / English is permitted. |
 | `Initial_Triage_Classification` | int | Documented institutional KTAS level (1–5). Used as the reference target for evaluation and as the ordinal classification label. |
 | `Research_ID`, `Extracted_ID` | str | Optional identifiers used to join predictions across runs. |

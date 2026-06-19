@@ -59,7 +59,6 @@ sys.path.insert(0, str(_REPO_ROOT / "src"))
 
 from drktas.data_io import extract_age_from_clinical_note  # noqa: E402
 from drktas.guidelines import GuidelineHelper  # noqa: E402
-from drktas.prompts import load_prompt  # noqa: E402
 from drktas.stage2_gate import (  # noqa: E402
     Stage2Decision,
     apply_acuity_preserving_gate,
@@ -226,7 +225,20 @@ def load_stage1_predictions(
 # Prompt & response
 # =============================================================================
 
-PROMPT_TEMPLATE = load_prompt("stage2_modifier_selection")
+PROMPT_TEMPLATE = """당신은 응급 환자 분류 전문가입니다. 환자 기록을 분석하여 세부 분류 후보군에서 가장 적합한 후보를 찾는 것이 당신의 목표입니다.
+
+{clinical_note}
+
+[세부 분류 후보군]
+{candidates_text}
+
+[검증 지침]
+1. 분석: 활력징후, 주호소, 현재 병력 등 환자 기록을 주의 깊게 분석하세요.
+2. 결정: 세부 분류 후보군에서 환자 기록을 가장 정확히 반영하는 분류의 번호를 출력하세요.
+3. 두 후보가 동등하게 적합하다고 판단되면, 환자 안전을 위해 더 응급한 분류의 번호를 출력하세요.
+
+[출력 형식]
+{{"검증결과": "수정필요", "선택": "1", "이유": "선택의 근거를 한 문장으로 요약"}}"""
 
 
 def render_candidates(candidates: List[Dict[str, Any]]) -> str:

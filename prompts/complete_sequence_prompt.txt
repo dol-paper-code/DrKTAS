@@ -1,0 +1,29 @@
+[지시문]
+다음 환자의 의료 기록을 바탕으로 응급 중증도를 분류하십시오.
+
+[기본 정보 & 활력 징후]
+- 나이: 78
+- 성별: 여
+- 의식 수준: Pain
+- 혈압 (수축기/이완기): 110.0 / 70.0
+- 심박수: 126.0
+- 호흡수: 20.0
+- 체온: 36.8
+
+[내원 정보]
+- 방문 사유: 질병
+- 내원 경로: 외부에서 전원
+- 내원 방법: 병원구급차
+
+[과거력]
+- Hypertension: Y
+- Diabetes: Y
+- Pulmonary Tuberculosis: N
+
+[주호소]
+dyspnea
+
+[현재 병력]
+상기환자 HTN, DM, S/P CVA, S/P PTGBD있으며 재활요양병원에서 supportive care 중인 자로, 2017.07.07 AM 7:00경 Dyspnea 발생하여 본원 응급센터 내원함(taken from 환자보호자) #Local 소견 -2017.06.30: PTGBD drainage(-), fever #Local anti hx.: 6/1-6/6: 메로신(1g, TID), 렉타신(500mg, QD) 6/6-6/15: 타조박탐(4.5g TID), 젠타마이신(80mg, TID) -mMRC grade (4/4) -SaO2 : RA 79%, ...
+
+[중증도]

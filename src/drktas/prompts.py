@@ -18,11 +18,12 @@ from typing import Iterable, Optional
 
 
 _PROMPT_FILES = {
-    "ktas_grade_info": "ktas_grade_info.txt",
-    "baseline_no_description": "baseline_no_description.txt",
-    "baseline_with_description": "baseline_with_description.txt",
-    "baseline_constrained": "baseline_constrained.txt",
-    "stage2_modifier_selection": "stage2_modifier_selection.txt",
+    "final_level_only_prompt": "final_level_only_prompt.txt",
+    "complete_sequence_prompt": "complete_sequence_prompt.txt",
+    "classification_only_prompt": "classification_only_prompt.txt",
+    "dual_head_prompt": "dual_head_prompt.txt",
+    "drktas_prompt": "Dr.KTAS_prompt.txt",
+    "zero_shot_with_description_prompt": "zero_shot_with_description_prompt.txt",
 }
 
 
